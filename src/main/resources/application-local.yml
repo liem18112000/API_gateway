@@ -13,12 +13,3 @@ spring:
       max-size: 30
       max-idle-time: 5m
       validation-query: SELECT 1
-  cloud:
-    gateway:
-      globalcors:
-        add-to-simple-url-handler-mapping: true
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods: GET, POST, PUT, DELETE, OPTIONS
-            allowedHeaders: "*"

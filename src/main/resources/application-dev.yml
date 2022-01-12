@@ -15,6 +15,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: GET, POST, PUT, DELETE, OPTIONS
+            allowedHeaders: "*"
 domain:
   base-url:
     ingredient: http://localhost:8080/ingredient
