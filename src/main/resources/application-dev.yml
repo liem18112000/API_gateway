@@ -1,0 +1,27 @@
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+server:
+  port: 5000
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/gateway
+    username: root
+    password:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+domain:
+  base-url:
+    ingredient: http://localhost:8080/ingredient
+    recipe: http://localhost:8081/recipe
+    supplier: http://localhost:8082/supplier
+    notification: http://localhost:8083/notification
+    security: http://localhost:8084/security
+  tenant:
+    alias: fl
+    id: 1

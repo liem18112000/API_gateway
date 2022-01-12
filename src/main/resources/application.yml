@@ -1,0 +1,41 @@
+server:
+  port: 5000
+spring:
+  application:
+    name: api-gateway
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/gateway
+    username: root
+    password:
+    properties:
+      sslMode: DISABLED
+    pool:
+      enabled: true
+      initial-size: 22
+      max-size: 30
+      max-idle-time: 5m
+      validation-query: SELECT 1
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: GET, POST, PUT, DELETE, OPTIONS
+            allowedHeaders: Origin, Accept, Content-Type, X-Requested-With, X-XSRF-TOKEN, Authentication, Authorization, Version
+  profiles:
+    active: dev, local
+application:
+  formatted-version: (v1.0.0)
+  base-url: ingredient
+domain:
+  base-url:
+    ingredient: https://ingredient.com
+    recipe: https://recipe.com
+    supplier: https://supplier.com
+    notification: https://notification.com
+    security: https://security.com
+  tenant:
+    alias: fl
+    id: 1
