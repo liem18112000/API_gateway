@@ -5,17 +5,23 @@ logging:
 server:
   port: 5000
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/gateway
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/gateway
     username: root
     password:
-  jpa:
-    show-sql: true
     properties:
-      hibernate:
-        format_sql: true
+      sslMode: DISABLED
+    pool:
+      enabled: true
+      initial-size: 22
+      max-size: 30
+      max-idle-time: 5m
+      validation-query: SELECT 1
   cloud:
+    consul:
+      enabled: true
+      config:
+        enabled: false
     gateway:
       globalcors:
         add-to-simple-url-handler-mapping: true
@@ -24,13 +30,11 @@ spring:
             allowedOrigins: "*"
             allowedMethods: GET, POST, PUT, DELETE, OPTIONS
             allowedHeaders: "*"
+services:
+  security-service:
+    name: security-service
+    url:  http://localhost:8084
 domain:
-  base-url:
-    ingredient: http://localhost:8080/ingredient
-    recipe: http://localhost:8081/recipe
-    supplier: http://localhost:8082/supplier
-    notification: http://localhost:8083/notification
-    security: http://localhost:8084/security
   tenant:
     alias: fl
     id: 1

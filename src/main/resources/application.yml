@@ -4,7 +4,7 @@ spring:
   application:
     name: api-gateway
   r2dbc:
-    url: r2dbc:mysql://localhost:3306/gateway
+    url: r2dbc:mysql://localhost:3306/gateway?serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
     password:
     properties:
@@ -24,18 +24,37 @@ spring:
             allowedOrigins: "*"
             allowedMethods: GET, POST, PUT, DELETE, OPTIONS
             allowedHeaders: Origin, Accept, Content-Type, X-Requested-With, X-XSRF-TOKEN, Authentication, Authorization, Version
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      enabled: true
+      config:
+        format: files
+        prefixes: ${CONSUL_CONFIGS_TAG:app/configs/api-gateway}
+        watch:
+          delay: 5000
+      discovery:
+        register: true
+        service-name: ${spring.application.name}
+        instance-id: ${spring.application.name}:${random.value}
+        tags:
+          - java
+          - spring
+          - gateway
   profiles:
     active: dev, local
 application:
   formatted-version: (v1.0.0)
-  base-url: ingredient
+  base-url: gateway
+  route-mode: dynamic
+services:
+  notification-service:
+    name: notification-service
+    url:  https://notification.com
+  security-service:
+    name: security-service
+    url:  https://security.com
 domain:
-  base-url:
-    ingredient: https://ingredient.com
-    recipe: https://recipe.com
-    supplier: https://supplier.com
-    notification: https://notification.com
-    security: https://security.com
   tenant:
     alias: fl
     id: 1

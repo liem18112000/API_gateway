@@ -13,3 +13,11 @@ spring:
       max-size: 30
       max-idle-time: 5m
       validation-query: SELECT 1
+application:
+  formatted-version: (v1.0.0)
+  base-url: gateway
+  route-mode: dynamic
+services:
+  security-service:
+    name: security-service
+    url:  http://localhost:8084
