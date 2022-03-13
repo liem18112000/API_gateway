@@ -4,7 +4,7 @@ spring:
   application:
     name: api-gateway
   r2dbc:
-    url: r2dbc:mysql://localhost:3306/gateway?serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: r2dbc:mysql://${DB_HOST:localhost}:3306/gateway?serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
     password:
     properties:
