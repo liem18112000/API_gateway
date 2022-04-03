@@ -23,7 +23,7 @@ spring:
           '[/**]':
             allowedOrigins: "*"
             allowedMethods: GET, POST, PUT, DELETE, OPTIONS
-            allowedHeaders: Origin, Accept, Content-Type, X-Requested-With, X-XSRF-TOKEN, Authentication, Authorization, Version, X-API-KEY, X-API-PRINCIPAL
+            allowedHeaders: Origin, Accept, Content-Type, X-Requested-With, X-XSRF-TOKEN, Authentication, Authorization, Version, X-API-KEY, X-PRINCIPAL
     consul:
       host: ${CONSUL_HOST:localhost}
       port: ${CONSUL_PORT:8500}

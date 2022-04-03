@@ -6,6 +6,7 @@ import com.liem.apigateway.route.service.RouteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -23,10 +24,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.liem.apigateway.config.AppConfig.X_API_KEY_HEADER;
+import static com.liem.apigateway.config.AppConfig.X_PRINCIPAL_HEADER;
 import static com.liem.apigateway.config.auth.AuthConfig.AUTHORIZATION_HTTP_METHODS;
 import static com.liem.apigateway.config.auth.AuthConfig.EXCLUDED_AUTHORIZE_PATH;
-import static com.liem.apigateway.config.auth.AuthConfig.HEADER_API_KEY;
-import static com.liem.apigateway.config.auth.AuthConfig.HEADER_API_PRINCIPAL;
 
 @Component
 @Slf4j
@@ -64,7 +65,11 @@ public class ApiKeyAuthenticateFilter implements WebFilter {
     ) {
         final var httpMethod = request.getMethod();
         final var headers = request.getHeaders();
-        final var apiKey = headers.get(HEADER_API_KEY);
+        final var apiKey = headers.get(X_API_KEY_HEADER);
+
+        if (HttpMethod.OPTIONS.equals(httpMethod)) {
+            return chain.filter(exchange);
+        }
 
         return routeService.getAllRoutes().collectList().flatMap(allRoute -> {
             boolean isMatch = checkRouteMatch(path, allRoute).get();
@@ -79,7 +84,7 @@ public class ApiKeyAuthenticateFilter implements WebFilter {
                 if (AUTHORIZATION_HTTP_METHODS.contains(httpMethod)) {
 
                     // Run authorization with api key and principal
-                    final var apiPrincipal = headers.get(HEADER_API_PRINCIPAL);
+                    final var apiPrincipal = headers.get(X_PRINCIPAL_HEADER);
 
                     if (Objects.isNull(apiPrincipal) || apiPrincipal.isEmpty()) {
                         log.warn("Api principal is not found");
@@ -107,6 +112,7 @@ public class ApiKeyAuthenticateFilter implements WebFilter {
             String apiKey,
             String apiPrincipal
     ) {
+
         if (cachedKeysWithPrincipals.containsKey(apiKey)) {
             final var cachedPrincipal = cachedKeysWithPrincipals.get(apiKey);
             if (cachedPrincipal.equals(apiPrincipal)) {
