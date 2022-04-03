@@ -16,11 +16,17 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.liem.apigateway.config.auth.AuthConfig.*;
+import static com.liem.apigateway.config.auth.AuthConfig.AUTHORIZATION_HTTP_METHODS;
+import static com.liem.apigateway.config.auth.AuthConfig.EXCLUDED_AUTHORIZE_PATH;
+import static com.liem.apigateway.config.auth.AuthConfig.HEADER_API_KEY;
+import static com.liem.apigateway.config.auth.AuthConfig.HEADER_API_PRINCIPAL;
 
 @Component
 @Slf4j
