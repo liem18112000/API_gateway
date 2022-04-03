@@ -33,7 +33,7 @@ public class ApiKeyAuthenticateFilter implements WebFilter {
 
     private final Set<String> cachedKeys = ConcurrentHashMap.newKeySet();
 
-    private final Map<String, String> cachedKeysWithPrincipals = new ConcurrentHashMap();
+    private final Map<String, String> cachedKeysWithPrincipals = new ConcurrentHashMap<>();
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
