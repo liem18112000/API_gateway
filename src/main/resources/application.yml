@@ -42,7 +42,7 @@ spring:
           - spring
           - gateway
   profiles:
-    active: dev, local
+    active: dev, local, cors
 application:
   formatted-version: (v1.0.0)
   base-url: gateway

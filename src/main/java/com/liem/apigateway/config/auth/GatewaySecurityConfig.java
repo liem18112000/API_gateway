@@ -15,8 +15,6 @@ public class GatewaySecurityConfig {
     @Bean
     SecurityWebFilterChain securityFilterChain(final ServerHttpSecurity http) {
         http
-                .authorizeExchange().pathMatchers(HttpMethod.OPTIONS).permitAll()
-                .and()
                 .csrf().disable();
         return http.build();
     }
