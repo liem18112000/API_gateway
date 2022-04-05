@@ -26,7 +26,7 @@ public class DynamicRouteService implements RouteService {
         return routeRepository.findAll().filter(RouteEntity::isActive)
                 .map(entity -> {
                     final var dto = this.routeMapper.toDto(entity);
-                    log.info("Mapping {} - {}", dto.getUri(), dto.getPath());
+                    log.info("Mapping {} - {} - {}", dto.getUri(), dto.getPath(), dto.isAuth());
                     return dto;
                 });
     }
