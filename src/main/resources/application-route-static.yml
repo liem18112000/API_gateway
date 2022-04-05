@@ -1,0 +1,8 @@
+application:
+  formatted-version: (v1.0.0)
+  base-url: gateway
+  route-mode: static
+domain:
+  tenant:
+    alias: fl
+    id: 1
