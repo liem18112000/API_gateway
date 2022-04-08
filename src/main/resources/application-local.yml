@@ -2,7 +2,7 @@ server:
   port: 5000
 spring:
   r2dbc:
-    url: r2dbc:mysql://${DB_HOST:localhost}/gateway
+    url: r2dbc:mysql://localhost:3306/gateway
     username: root
     password:
     properties:
@@ -14,7 +14,6 @@ spring:
       max-idle-time: 5m
       validation-query: SELECT 1
 application:
-  formatted-version: (v1.0.0)
   base-url: gateway
   route-mode: dynamic
 services:

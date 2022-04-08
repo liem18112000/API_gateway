@@ -6,9 +6,9 @@ server:
   port: 5000
 spring:
   r2dbc:
-    url: r2dbc:mysql://${DB_HOST:localhost}:3306/gateway
-    username: root
-    password:
+    url: r2dbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/gateway?serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: ${DB_USER:root}
+    password: ${DB_PASS:}
     properties:
       sslMode: DISABLED
     pool:
