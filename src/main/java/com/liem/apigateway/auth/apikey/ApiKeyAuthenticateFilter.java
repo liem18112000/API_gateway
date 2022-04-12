@@ -3,6 +3,8 @@ package com.liem.apigateway.auth.apikey;
 import com.liem.apigateway.client.AuthClient;
 import com.liem.apigateway.route.entity.RouteDTO;
 import com.liem.apigateway.route.service.RouteService;
+import io.sentry.Sentry;
+import io.sentry.spring.tracing.SentrySpan;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +78,8 @@ public class ApiKeyAuthenticateFilter implements WebFilter {
             if (isMatch) {
                 if (Objects.isNull(apiKey) || apiKey.isEmpty()) {
                     log.warn("Api key is not found");
+                    Sentry.captureMessage("Api principal is not found: HTTP status code was "
+                            .concat(String.valueOf(HttpStatus.UNAUTHORIZED)));
                     response.setStatusCode(HttpStatus.UNAUTHORIZED);
                     return Mono.empty();
                 }
@@ -88,6 +92,8 @@ public class ApiKeyAuthenticateFilter implements WebFilter {
 
                     if (Objects.isNull(apiPrincipal) || apiPrincipal.isEmpty()) {
                         log.warn("Api principal is not found");
+                        Sentry.captureMessage("Api principal is not found: HTTP status code was "
+                                .concat(String.valueOf(HttpStatus.FORBIDDEN)));
                         response.setStatusCode(HttpStatus.FORBIDDEN);
                         return Mono.empty();
                     }
@@ -127,10 +133,15 @@ public class ApiKeyAuthenticateFilter implements WebFilter {
                 cachedKeysWithPrincipals.put(apiKey, apiPrincipal);
                 return chain.filter(exchange);
             }
+            Sentry.captureMessage("Request forbidden: HTTP status code was "
+                    .concat(String.valueOf(HttpStatus.FORBIDDEN)));
             response.setStatusCode(HttpStatus.FORBIDDEN);
             return Mono.empty();
         }).onErrorResume(throwable -> {
             throwable.printStackTrace();
+            Sentry.captureException(throwable);
+            Sentry.captureMessage("Exception was thrown: HTTP status code was "
+                    .concat(String.valueOf(HttpStatus.UNAUTHORIZED)));
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return Mono.empty();
         });
@@ -153,10 +164,15 @@ public class ApiKeyAuthenticateFilter implements WebFilter {
                 this.cachedKeys.add(apiKey);
                 return chain.filter(exchange);
             }
+            Sentry.captureMessage("Request unauthorized: HTTP status code was "
+                    .concat(String.valueOf(HttpStatus.UNAUTHORIZED)));
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return Mono.empty();
         }).onErrorResume(throwable -> {
             throwable.printStackTrace();
+            Sentry.captureMessage("Exception was thrown: HTTP status code was "
+                    .concat(String.valueOf(HttpStatus.UNAUTHORIZED)));
+            Sentry.captureException(throwable);
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return Mono.empty();
         });

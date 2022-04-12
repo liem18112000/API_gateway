@@ -39,6 +39,18 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!--Sentry-->
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry-spring-boot-starter</artifactId>
+            <version>5.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry-logback</artifactId>
+            <version>5.7.2</version>
+        </dependency>
+
         <!--  Reactive Feign Client  -->
         <dependency>
             <groupId>com.playtika.reactivefeign</groupId>
