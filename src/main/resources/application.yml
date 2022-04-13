@@ -63,3 +63,4 @@ sentry:
   traces-sample-rate: 1.0
   environment: production
   sample-rate: 1.0
+  release: inventory@1.1.0
