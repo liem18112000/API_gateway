@@ -7,6 +7,7 @@ import com.liem.apigateway.route.entity.RouteEntityRepository;
 import com.liem.apigateway.route.entity.RouteMapper;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 public class DynamicRouteService implements RouteService {
@@ -29,5 +30,12 @@ public class DynamicRouteService implements RouteService {
                     log.info("Mapping {} - {} - {}", dto.getUri(), dto.getPath(), dto.isAuth());
                     return dto;
                 });
+    }
+
+    @Override
+    public Mono<RouteDTO> getByServiceName(String name) {
+        return this.routeRepository
+                .findByServiceNameAndActiveIsTrue(name)
+                .map(this.routeMapper::toDto);
     }
 }

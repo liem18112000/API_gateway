@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotBlank;
 
@@ -32,6 +33,12 @@ public class StaticRouteService implements RouteService {
                 "ingredient", "recipe", "supplier", "notification", "security",
                 "endpoint/ingredient", "endpoint/recipe", "endpoint/supplier", "endpoint/notification"
         }).map(this::getRouteDTO);
+    }
+
+    public Mono<RouteDTO> getByServiceName(String name) {
+        return this.getAllRoutes().collectList().mapNotNull(routes -> routes.stream()
+                .filter(route -> route.getServiceName().contains(name))
+                .findFirst().orElse(null));
     }
 
     private RouteDTO getRouteDTO(String domain) {

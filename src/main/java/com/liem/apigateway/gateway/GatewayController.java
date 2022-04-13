@@ -2,6 +2,7 @@ package com.liem.apigateway.gateway;
 
 import com.liem.apigateway.config.ApiV1;
 import com.liem.apigateway.gateway.service.GatewayService;
+import io.sentry.spring.tracing.SentryTransaction;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
+@SentryTransaction(operation = "gateway")
 @RestController
 @RequestMapping(value = "${application.base-url}/" + ApiV1.URI_API, produces = ApiV1.MIME_API)
 public class GatewayController {

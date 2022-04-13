@@ -20,3 +20,7 @@ services:
   security-service:
     name: security-service
     url:  http://localhost:8084
+sentry:
+  dsn: https://f0aa547a7df247a190c11bb8fecb4fab@o1200481.ingest.sentry.io/6324453
+  traces-sample-rate: 1.0
+  environment: local

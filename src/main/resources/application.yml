@@ -42,7 +42,7 @@ spring:
           - spring
           - gateway
   profiles:
-    active: dev, cors
+    active: dev, cors, local
 application:
   formatted-version: (v1.1.0)
   base-url: gateway
@@ -61,3 +61,5 @@ domain:
 sentry:
   dsn: https://f0aa547a7df247a190c11bb8fecb4fab@o1200481.ingest.sentry.io/6324453
   traces-sample-rate: 1.0
+  environment: production
+  sample-rate: 1.0
