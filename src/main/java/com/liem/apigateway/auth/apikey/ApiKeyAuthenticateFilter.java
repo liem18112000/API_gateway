@@ -5,6 +5,7 @@ import com.liem.apigateway.route.entity.RouteDTO;
 import com.liem.apigateway.route.service.RouteService;
 import io.sentry.Sentry;
 import io.sentry.spring.tracing.SentrySpan;
+import io.sentry.spring.tracing.SentryTransaction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import static com.liem.apigateway.config.auth.AuthConfig.EXCLUDED_AUTHORIZE_PATH
 
 @Component
 @Slf4j
+@SentryTransaction(operation = "api-key-auth-filter")
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class ApiKeyAuthenticateFilter implements WebFilter {
 
