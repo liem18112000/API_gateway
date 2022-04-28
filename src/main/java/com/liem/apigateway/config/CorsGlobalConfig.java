@@ -20,7 +20,7 @@ public class CorsGlobalConfig implements WebFluxConfigurer {
                 .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Access-Control-Allow-Origin", "Origin", "X-Requested-With", "Content-Type", "Accept",
                         "X-XSRF-TOKEN", "X-CSRF-TOKEN", "Authentication", "Authorization", "tenantId", "userId", "username",
-                        "x-principal", "x-api-key");
+                        "sentry-trace", "x-principal", "x-api-key");
         WebFluxConfigurer.super.addCorsMappings(registry);
     }
 }
